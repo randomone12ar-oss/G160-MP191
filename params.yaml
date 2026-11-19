@@ -1,0 +1,64 @@
+data:
+  raw_train_path: "data/raw/train.csv"
+  raw_later_path: "data/raw/later.csv"
+  raw_holdout_path: "data/raw/holdout_features.csv"
+  target_col: "delivery_min"
+  id_col: "record_id"
+  date_col: "date"
+  features:
+    numeric:
+      - "distance_km"
+      - "tiffins"
+      - "handovers"
+      - "wait_at_station_min"
+      - "rider_age"
+      - "temp_c"
+    categorical:
+      - "transport"
+      - "route_zone"
+
+cleaning:
+  unit_mixup:
+    column: "distance_km"
+    group_col: "route_zone"
+    group_value: "Suburb"
+    factor: 1000
+    threshold: 100.0
+  stuck_sensor:
+    column: "rider_age"
+    start_date: "2026-05-02"
+    end_date: "2026-05-19"
+    stuck_value: 23
+    strategy: "median"
+  target_typos:
+    column: "delivery_min"
+    factor: 10.0
+    threshold: 100.0
+
+split:
+  test_size: 0.2
+  random_seed: 42
+  later_train_ratio: 0.7
+
+tracking:
+  experiment_name: "mp191-tiffin-delivery"
+  registered_model_name: "mp191-delivery-predictor"
+  tracking_uri: "sqlite:///mlflow.db"
+  champion_alias: "champion"
+
+promotion:
+  min_improvement_pct: 8.0
+
+models:
+  random_forest:
+    n_estimators: 100
+    max_depth: 10
+    random_state: 42
+  extra_trees:
+    n_estimators: 100
+    max_depth: 10
+    random_state: 42
+  hist_gradient_boosting:
+    max_iter: 100
+    max_depth: 6
+    random_state: 42
