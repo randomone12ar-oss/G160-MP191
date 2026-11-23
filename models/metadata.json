@@ -1,0 +1,97 @@
+{
+  "model_name": "ridge_l2_regularized",
+  "run_id": "89f7dded820240088b22162a244960bb",
+  "registered_model_name": "mp191-delivery-predictor",
+  "champion_version": 1,
+  "validation_metrics": {
+    "mae": 2.2989,
+    "rmse": 2.9987,
+    "r2": 0.9357
+  },
+  "hyperparameters": {
+    "alpha": 1.0,
+    "fit_intercept": true
+  },
+  "features": {
+    "numeric": [
+      "distance_km",
+      "tiffins",
+      "handovers",
+      "wait_at_station_min",
+      "rider_age",
+      "temp_c"
+    ],
+    "categorical": [
+      "transport",
+      "route_zone"
+    ]
+  },
+  "target": "delivery_min",
+  "data_sha256": "e93ccf33c9481256feec9ddd6c095016597672095b80852755ee1dca6eb2e672",
+  "random_seed": 42,
+  "all_configurations_evaluated": [
+    {
+      "config_name": "linear_regression_ols",
+      "family": "linear",
+      "run_id": "a52b3a576b824bbf839c47643514ce6a",
+      "val_mae": 2.3015,
+      "val_rmse": 3.0,
+      "val_r2": 0.9357,
+      "train_mae": 2.356
+    },
+    {
+      "config_name": "ridge_l2_regularized",
+      "family": "linear",
+      "run_id": "89f7dded820240088b22162a244960bb",
+      "val_mae": 2.2989,
+      "val_rmse": 2.9987,
+      "val_r2": 0.9357,
+      "train_mae": 2.3559
+    },
+    {
+      "config_name": "rf_shallow_conservative",
+      "family": "random_forest",
+      "run_id": "8b263db6c0c842509808840352834571",
+      "val_mae": 3.9216,
+      "val_rmse": 4.9282,
+      "val_r2": 0.8264,
+      "train_mae": 2.8457
+    },
+    {
+      "config_name": "rf_deep_capacity",
+      "family": "random_forest",
+      "run_id": "7d167f8dec0c4281a877c0f39a376480",
+      "val_mae": 3.4442,
+      "val_rmse": 4.4739,
+      "val_r2": 0.8569,
+      "train_mae": 1.3259
+    },
+    {
+      "config_name": "hgb_baseline",
+      "family": "gradient_boosting",
+      "run_id": "fdd60c387cd042db8b7f22a115bf0ad8",
+      "val_mae": 2.9046,
+      "val_rmse": 3.7407,
+      "val_r2": 0.9,
+      "train_mae": 1.2245
+    },
+    {
+      "config_name": "hgb_conservative",
+      "family": "gradient_boosting",
+      "run_id": "e27b5587352f4e588b49d3fda59c9034",
+      "val_mae": 2.9234,
+      "val_rmse": 3.7184,
+      "val_r2": 0.9012,
+      "train_mae": 1.6528
+    },
+    {
+      "config_name": "hgb_deep_fast",
+      "family": "gradient_boosting",
+      "run_id": "345ab313831d422aa1cffcd35eaa94a3",
+      "val_mae": 3.0348,
+      "val_rmse": 3.875,
+      "val_r2": 0.8927,
+      "train_mae": 0.6399
+    }
+  ]
+}
