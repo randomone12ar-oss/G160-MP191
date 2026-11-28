@@ -18,6 +18,7 @@ Logging:
 from datetime import datetime, timezone
 import json
 import logging
+import math
 from pathlib import Path
 import sys
 import time
@@ -183,7 +184,12 @@ def predict(request: PredictionRequest):
 
     try:
         raw_pred = model.predict(input_df)[0]
-        delivery_min = round(float(raw_pred), 2)
+        raw_pred = float(raw_pred)
+
+        if not math.isfinite(raw_pred):
+            raise ValueError("Model returned a non-finite prediction")
+
+        delivery_min = round(raw_pred, 2)
         duration_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
         # Emit structured single-line JSON log to stdout

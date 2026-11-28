@@ -15,9 +15,10 @@ Verifies:
 
 import math
 from fastapi.testclient import TestClient
+import numpy as np
 import pytest
 
-from app.main import app, load_champion_model
+from app.main import app, get_model, load_champion_model
 
 
 @pytest.fixture(scope="module")
@@ -150,3 +151,39 @@ def test_multiple_sequential_predictions(
     assert res1.status_code == 200
     assert res2.status_code == 200
     assert res1.json()["delivery_min"] == res2.json()["delivery_min"]
+
+
+@pytest.mark.parametrize(
+    "non_finite_val", [float("nan"), float("inf"), float("-inf")]
+)
+def test_non_finite_prediction_rejected(
+    client: TestClient, valid_payload: dict, monkeypatch, non_finite_val: float
+):
+    """
+    Checks that non-finite model predictions (NaN, +inf, -inf) are rejected with HTTP 500,
+    preventing invalid values from ever reaching the client in delivery_min.
+    """
+    model = get_model()
+
+    def mock_predict(df):
+        return np.array([non_finite_val])
+
+    monkeypatch.setattr(model, "predict", mock_predict)
+
+    response = client.post("/predict", json=valid_payload)
+    assert response.status_code == 500
+    data = response.json()
+    assert "delivery_min" not in data
+    assert data == {"detail": "Error processing prediction request"}
+
+
+def test_model_intact_and_functional_after_non_finite_simulations(
+    client: TestClient, valid_payload: dict
+):
+    """Checks that the real model remains completely functional and unchanged after simulations."""
+    response = client.post("/predict", json=valid_payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "delivery_min" in data
+    assert math.isfinite(data["delivery_min"])
+    assert data["delivery_min"] > 0.0
