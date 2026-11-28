@@ -1,0 +1,45 @@
+# Git
+.git/
+.gitignore
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+tests/
+
+# Environment files
+.env
+.env.*
+
+# DVC and Raw Datasets
+.dvc/
+.dvcignore
+*.dvc
+data/
+
+# MLflow experiment databases and artifacts
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Documentation, reports and temporary outputs
+reports/
+predictions/
+*.log
+scratch/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
